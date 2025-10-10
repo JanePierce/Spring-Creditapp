@@ -8,6 +8,7 @@ public class CreditSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CreditSystemApplication.class, args);
+        System.out.println("приложение запущено");
 	}
 
 }
