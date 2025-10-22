@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Кредитная система</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+<div th:replace="fragments/header :: navbar"></div>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">📊 <span th:text="${title}">Статистика кредитной системы</span></h1>
+            <p th:text="${message}" class="lead">Добро пожаловать в систему управления кредитными заявками!</p>
+        </div>
+    </div>
+
+    <!-- Карточки со статистикой -->
+    <div class="row">
+        <!-- Всего клиентов -->
+        <div class="col-md-3 mb-4">
+            <div class="card text-dark" style="background-color: #FFF9C4;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 th:text="${totalClients}">19</h4>
+                            <p>Всего клиентов</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-people fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Одобренные заявки -->
+        <div class="col-md-3 mb-4">
+            <div class="card text-dark" style="background-color: #FFEE58;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 th:text="${approvedApplications}">10</h4>
+                            <p>Одобренных заявок</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-check-circle fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Заявки на скоринге -->
+        <div class="col-md-3 mb-4">
+            <div class="card text-dark" style="background-color: #FFD54F;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 th:text="${scoringApplications}">6</h4>
+                            <p>Заявок на скоринге</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-clock fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Отклоненные заявки -->
+        <div class="col-md-3 mb-4">
+            <div class="card text-dark" style="background-color: #FFB300;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 th:text="${rejectedApplications}">5</h4>
+                            <p>Отклоненных заявок</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-x-circle fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Быстрые действия -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-dark" style="background-color: #FFF9C4;">
+                    <h5 class="card-title mb-0">🚀 Быстрые действия</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <a th:href="@{/clients}" class="btn text-dark w-100" style="background-color: #FFEE58; border-color: #FFD54F;">
+                                <i class="bi bi-person-plus"></i> Управление клиентами
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a th:href="@{/applications/new}" class="btn text-dark w-100" style="background-color: #FFD54F; border-color: #FFB300;">
+                                <i class="bi bi-file-earmark-plus"></i> Новая заявка
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a th:href="@{/applications}" class="btn text-dark w-100" style="background-color: #FFF9C4; border-color: #FFEE58;">
+                                <i class="bi bi-list-check"></i> Все заявки
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h5 class="card-title mb-3">🏦 Банк "Хуторок"</h5>
+                    <div class="row">
+                        <div class="col-6 col-md-3 mb-3">
+                            <i class="bi bi-percent text-warning fs-4"></i>
+                            <p class="mb-0 small">От 5.9%</p>
+                            <small class="text-muted">Ставка</small>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <i class="bi bi-clock text-success fs-4"></i>
+                            <p class="mb-0 small">1 день</p>
+                            <small class="text-muted">Рассмотрение</small>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <i class="bi bi-calendar-check text-primary fs-4"></i>
+                            <p class="mb-0 small">С 1998</p>
+                            <small class="text-muted">Опыт</small>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <i class="bi bi-telephone text-info fs-4"></i>
+                            <p class="mb-0 small">8-800-555</p>
+                            <small class="text-muted">Звонок бесплатный</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

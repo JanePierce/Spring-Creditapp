@@ -1,10 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Кредитные заявки</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
-$END$
+<div th:replace="fragments/header :: navbar"></div>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>📋 <span th:text="${title}">Кредитные заявки</span></h1>
+        <a th:href="@{/applications/new}" class="btn btn-success">
+            <i class="bi bi-file-earmark-plus"></i> Новая заявка
+        </a>
+    </div>
+
+    <!-- Фильтры по статусу -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-auto">
+                    <strong>Фильтр по статусу:</strong>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/applications}" class="btn btn-outline-secondary btn-sm">Все</a>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/applications/status/APPROVED}" class="btn btn-outline-success btn-sm">Одобренные</a>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/applications/status/SCORING}" class="btn btn-outline-warning btn-sm">На скоринге</a>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/applications/status/NEW}" class="btn btn-outline-info btn-sm">Новые</a>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/applications/status/REJECTED}" class="btn btn-outline-danger btn-sm">Отклоненные</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица заявок -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">
+                Список заявок
+                <span class="badge bg-secondary ms-2" th:text="${applications.size()}">0</span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Клиент</th>
+                        <th>Сумма</th>
+                        <th>Статус</th>
+                        <th>Баллы</th>
+                        <th>Дата создания</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="app : ${applications}">
+                        <td th:text="${app.id}">1</td>
+                        <td>
+                                    <span th:text="${app.client.firstName + ' ' + app.client.lastName}">
+                                        Варвара Игнатьева
+                                    </span>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(app.amount, 1, 'COMMA', 2, 'POINT') + ' ₽'}">
+                            150,000.00 ₽
+                        </td>
+                        <td>
+                                    <span th:switch="${app.status.name()}" class="badge">
+                                        <span th:case="'APPROVED'" class="badge bg-success">Одобрено</span>
+                                        <span th:case="'REJECTED'" class="badge bg-danger">Отклонено</span>
+                                        <span th:case="'SCORING'" class="badge bg-warning">На скоринге</span>
+                                        <span th:case="'NEW'" class="badge bg-info">Новая</span>
+                                    </span>
+                        </td>
+                        <td>
+                            <span th:if="${app.score != null}" th:text="${app.score}" class="badge bg-dark">85</span>
+                            <span th:unless="${app.score != null}" class="text-muted">-</span>
+                        </td>
+                        <td th:text="${#temporals.format(app.creationDate, 'dd.MM.yyyy HH:mm')}">
+                            15.01.2024 10:00
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a th:href="@{/applications/{id}(id=${app.id})}"
+                                   class="btn btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <form th:action="@{/applications/{id}/scoring(id=${app.id})}"
+                                      method="post"
+                                      class="d-inline"
+                                      th:if="${app.status == 'NEW' or app.status == 'SCORING'}">
+                                    <button type="submit" class="btn btn-outline-warning">
+                                        <i class="bi bi-calculator"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Если заявок нет -->
+                    <tr th:if="${applications.empty}">
+                        <td colspan="7" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox display-4 d-block mb-2"></i>
+                            Нет кредитных заявок
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

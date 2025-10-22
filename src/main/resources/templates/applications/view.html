@@ -1,10 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Просмотр заявки</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
-$END$
+<div th:replace="fragments/header :: navbar"></div>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <!-- Сообщения -->
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${successMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span th:text="${errorMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Карточка заявки -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">📋 Заявка #<span th:text="${app.id}">1</span></h4>
+                    <div>
+                        <a th:href="@{/applications}" class="btn btn-secondary btn-sm">
+                            <i class="bi bi-arrow-left"></i> Назад к списку
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Основная информация -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Клиент</h6>
+                            <p class="fs-5">
+                                <i class="bi bi-person"></i>
+                                <span th:text="${app.client.firstName + ' ' + app.client.lastName}">
+                                    Варвара Игнатьева
+                                </span>
+                            </p>
+                            <p class="text-muted mb-1">
+                                <i class="bi bi-passport"></i>
+                                Паспорт: <span th:text="${app.client.passportData}">4501123456</span>
+                            </p>
+                            <p class="text-muted mb-1">
+                                <i class="bi bi-telephone"></i>
+                                Телефон: <span th:text="${app.client.phoneNumber}">+79161234567</span>
+                            </p>
+                            <p class="text-muted">
+                                <i class="bi bi-envelope"></i>
+                                Email: <span th:text="${app.client.email}">varxvar@mail.ru</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Детали заявки</h6>
+                            <p class="mb-2">
+                                <strong>Сумма:</strong>
+                                <span class="badge bg-primary fs-6" th:text="${#numbers.formatDecimal(app.amount, 1, 'COMMA', 2, 'POINT') + ' ₽'}">
+                                    150,000.00 ₽
+                                </span>
+                            </p>
+                            <p class="mb-2">
+                                <strong>Статус:</strong>
+                                <span th:switch="${app.status.name()}" class="badge fs-6">
+                                    <span th:case="'APPROVED'" class="badge bg-success">Одобрено</span>
+                                    <span th:case="'REJECTED'" class="badge bg-danger">Отклонено</span>
+                                    <span th:case="'SCORING'" class="badge bg-warning">На скоринге</span>
+                                    <span th:case="'NEW'" class="badge bg-info">Новая</span>
+                                </span>
+                            </p>
+                            <p class="mb-2">
+                                <strong>Баллы скоринга:</strong>
+                                <span th:if="${app.score != null}"
+                                      class="badge bg-dark fs-6"
+                                      th:text="${app.score}">85</span>
+                                <span th:unless="${app.score != null}"
+                                      class="text-muted">Не рассчитано</span>
+                            </p>
+                            <p class="mb-0">
+                                <strong>Дата создания:</strong>
+                                <span th:text="${#temporals.format(app.creationDate, 'dd.MM.yyyy HH:mm')}">
+                                    15.01.2024 10:00
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Действия -->
+                    <div class="border-top pt-4">
+                        <h6>Действия с заявкой:</h6>
+                        <div class="btn-group" role="group">
+                            <!-- Скоринг -->
+                            <form th:action="@{/applications/{id}/scoring(id=${app.id})}"
+                                  method="post"
+                                  class="d-inline"
+                                  th:if="${app.status.name() == 'NEW' or app.status.name() == 'SCORING'}">
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="bi bi-calculator"></i> Запустить скоринг
+                                </button>
+                            </form>
+
+                            <!-- Одобрить -->
+                            <form th:action="@{/applications/{id}/status(id=${app.id})}"
+                                  method="post"
+                                  class="d-inline">
+                                <input type="hidden" name="status" value="APPROVED">
+                                <button type="submit"
+                                        class="btn btn-success"
+                                        th:disabled="${app.status.name() == 'APPROVED'}">
+                                    <i class="bi bi-check-circle"></i> Одобрить
+                                </button>
+                            </form>
+
+                            <!-- Отклонить -->
+                            <form th:action="@{/applications/{id}/status(id=${app.id})}"
+                                  method="post"
+                                  class="d-inline">
+                                <input type="hidden" name="status" value="REJECTED">
+                                <button type="submit"
+                                        class="btn btn-danger"
+                                        th:disabled="${app.status.name() == 'REJECTED'}">
+                                    <i class="bi bi-x-circle"></i> Отклонить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- История статусов (можно добавить позже) -->
+                    <div class="border-top pt-4 mt-4">
+                        <h6>📊 Дополнительная информация</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">ID заявки: <span th:text="${app.id}">1</span></small>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <small class="text-muted">
+                                    Последнее обновление:
+                                    <span th:text="${#temporals.format(app.creationDate, 'dd.MM.yyyy HH:mm')}">
+                                        15.01.2024 10:00
+                                    </span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ссылка на клиента -->
+            <div class="mt-3 text-center">
+                <a th:href="@{/clients/{id}(id=${app.client.id})}"
+                   class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-person"></i> Перейти к профилю клиента
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

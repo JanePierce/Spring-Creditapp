@@ -1,0 +1,120 @@
+/* Светлая тема (по умолчанию) */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-card: #ffffff;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --accent-color: #007bff;
+}
+
+/* Темная тема */
+[data-theme="dark"] {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-card: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --border-color: #333333;
+    --accent-color: #bb86fc;
+}
+
+/* Общие стили для обеих тем */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.card-header {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.navbar {
+    /* Навигация остается желтой в обеих темах */
+    background: linear-gradient(135deg, #FFD54F, #FFB300) !important;
+}
+
+.table {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--bg-secondary);
+}
+
+.table-dark {
+    background-color: var(--bg-secondary);
+}
+
+.form-control, .form-select {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-card);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25);
+}
+
+.alert {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.alert-success {
+    border-color: #198754;
+}
+
+.alert-danger {
+    border-color: #dc3545;
+}
+
+/* Стили для футера в разных темах */
+footer {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Стили для переключателя в футере */
+.theme-switcher {
+    margin-bottom: 10px;
+}
+
+#themeToggle {
+    transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+    transform: scale(1.05);
+}
+
+/* Дополнительные стили для лучшего отображения */
+.container {
+    background-color: var(--bg-primary);
+}
+
+.btn-outline-primary {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--accent-color);
+    color: white;
+}

@@ -5,15 +5,29 @@ DELETE FROM clients;
 DELETE FROM scoring_rules;
 
 -- Сбрасываем последовательности (auto-increment)
-ALTER SEQUENCE clients_id_seq RESTART WITH 1;
-ALTER SEQUENCE credit_applications_id_seq RESTART WITH 1;
 ALTER SEQUENCE scoring_rules_id_seq RESTART WITH 1;
 
 -- Добавляем тестовых клиентов
 INSERT INTO clients (first_name, last_name, passport_data, phone_number, email) VALUES
-('Иван', 'Петров', '4501123456', '+79161234567', 'ivan.petrov@mail.ru'),
-('Мария', 'Сидорова', '4501654321', '+79167654321', 'maria.sidorova@gmail.com'),
-('Алексей', 'Козлов', '4501987654', '+79169874563', 'alex.kozlov@yandex.ru');
+('Варвара', 'Игнатьева', '4501123456', '+79161234567', 'varxvar@mail.ru'),
+('Наталья', 'Рыжкова', '4501654321', '+79167654321', 'gorynich@gmail.com'),
+('Олег', 'Козлов', '4501987654', '+79169874563', 'oleg.kozlov@yandex.ru'),
+('Виталий', 'Ушаков', '4501987987', '+79169874364', 'vitaliy@mail.ru'),
+('Анна', 'Смирнова', '4511234567', '+79161112233', 'anna.smirnova@mail.ru'),
+('Дмитрий', 'Попов', '4512345678', '+79162223344', 'dmitry.popov@gmail.com'),
+('Екатерина', 'Васильева', '4513456789', '+79163334455', 'ekaterina.vasileva@yandex.ru'),
+('Сергей', 'Петров', '4514567890', '+79164445566', 'sergey.petrov@mail.ru'),
+('Марина', 'Соколова', '4515678901', '+79165556677', 'marina.sokolova@gmail.com'),
+('Александр', 'Михайлов', '4516789012', '+79166667788', 'alexander.mikhailov@yandex.ru'),
+('Ольга', 'Новикова', '4517890123', '+79167778899', 'olga.novikova@mail.ru'),
+('Иван', 'Федоров', '4518901234', '+79168889900', 'ivan.fedorov@gmail.com'),
+('Татьяна', 'Морозова', '4519012345', '+79169990011', 'tatyana.morozova@yandex.ru'),
+('Павел', 'Волков', '4520123456', '+79161001122', 'pavel.volkov@mail.ru'),
+('Юлия', 'Алексеева', '4521234567', '+79162112233', 'yulia.alexeeva@gmail.com'),
+('Максим', 'Лебедев', '4522345678', '+79163223344', 'maxim.lebedev@yandex.ru'),
+('Надежда', 'Семенова', '4523456789', '+79164334455', 'nadezhda.semenova@mail.ru'),
+('Артем', 'Павлов', '4524567890', '+79165445566', 'artem.pavlov@gmail.com'),
+('Елена', 'Громова', '4525678901', '+79166556677', 'elena.gromova@yandex.ru');
 
 -- Добавляем скоринговые правила
 INSERT INTO scoring_rules (rule_name, condition_description, points, active) VALUES
@@ -27,4 +41,21 @@ INSERT INTO scoring_rules (rule_name, condition_description, points, active) VAL
 INSERT INTO credit_applications (client_id, amount, status, creation_date, score) VALUES
 (1, 150000.00, 'APPROVED', '2024-01-15 10:00:00', 85),
 (2, 750000.00, 'SCORING', '2024-01-16 11:30:00', NULL),
-(3, 50000.00, 'REJECTED', '2024-01-14 09:15:00', 45);
+(3, 50000.00, 'REJECTED', '2024-01-14 09:15:00', 45),
+(4, 300000.00, 'APPROVED', '2024-01-17 14:20:00', 78),
+(5, 200000.00, 'APPROVED', '2024-01-18 09:30:00', 82),
+(6, 450000.00, 'SCORING', '2024-01-18 10:15:00', NULL),
+(7, 80000.00, 'REJECTED', '2024-01-19 11:45:00', 52),
+(8, 600000.00, 'APPROVED', '2024-01-19 13:20:00', 88),
+(9, 120000.00, 'NEW', '2024-01-20 08:50:00', NULL),
+(10, 350000.00, 'APPROVED', '2024-01-20 15:30:00', 79),
+(11, 90000.00, 'REJECTED', '2024-01-21 10:10:00', 48),
+(12, 550000.00, 'SCORING', '2024-01-21 12:25:00', NULL),
+(13, 250000.00, 'APPROVED', '2024-01-22 09:40:00', 81),
+(14, 70000.00, 'NEW', '2024-01-22 14:15:00', NULL),
+(15, 480000.00, 'APPROVED', '2024-01-23 11:05:00', 84),
+(16, 95000.00, 'REJECTED', '2024-01-23 16:20:00', 50),
+(17, 180000.00, 'SCORING', '2024-01-24 10:35:00', NULL),
+(18, 420000.00, 'APPROVED', '2024-01-24 13:50:00', 80),
+(19, 110000.00, 'NEW', '2024-01-25 08:25:00', NULL);
+

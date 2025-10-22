@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
 </head>
 <body>
-$END$
+<!-- Фрагмент футера -->
+<div th:fragment="footer">
+    <footer class="bg-dark text-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Банк Хуторок</h5>
+                    <p>Сегодня, у наших коллекторов корпоратив, а уже завтра они поедут дарить праздник Вам</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2025 Кредитная система. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
 </body>
 </html>
